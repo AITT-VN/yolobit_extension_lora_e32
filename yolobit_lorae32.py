@@ -385,7 +385,7 @@ class ebyteE32:
             # send the command
             result = self.sendCommand('getConfig')
             # check result
-            if len(result) != 5:
+            if len(result) != 6:
                 return "NOK"
             # decode result
             self.decodeConfig(result)
