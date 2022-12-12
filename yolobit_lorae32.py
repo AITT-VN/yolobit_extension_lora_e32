@@ -116,7 +116,7 @@ class ebyteE32:
                 0b11:['10dBm', '18dBm', '21dBm'] }
     
 
-    def __init__(self, tx_pin, rx_pin, Model='868T20D', Port='U1', Baudrate=9600, Parity='8N1', AirDataRate='2.4k', Address=0x0000, Channel=0x06, debug=False):
+    def __init__(self, tx_pin, rx_pin, Model='433T20D', Port='U1', Baudrate=9600, Parity='8N1', AirDataRate='2.4k', Address=0x0000, Channel=0x06, debug=False):
         ''' constructor for ebyte E32 LoRa module '''
         # configuration in dictionary
         self.config = {}
@@ -144,7 +144,7 @@ class ebyteE32:
         try:
             # check parameters
             if int(self.config['model'].split('T')[0]) not in ebyteE32.FREQ:
-                self.config['model'] = '868T20D'
+                self.config['model'] = '433T20D'
             if self.config['port'] not in ebyteE32.PORT:
                 self.config['port'] = 'U1'
             if int(self.config['baudrate']) not in ebyteE32.BAUDRATE:    
