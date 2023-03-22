@@ -1,4 +1,3 @@
-
 #######################################################################
 # MicroPython class for EBYTE E32 Series LoRa modules which are based
 # on SEMTECH SX1276/SX1278 chipsets and are available for 170, 433, 470,
@@ -136,6 +135,7 @@ class ebyteE32:
         self.tx_pin = tx_pin
         self.rx_pin = rx_pin
         self.serdev = None                         # instance for UART
+        self.received_data = None
         self.debug = debug
         
 
@@ -165,7 +165,7 @@ class ebyteE32:
                 print(self.serdev)
             # make operation mode & device status instances
             # set config to the ebyte E32 LoRa module
-            self.setConfig('setConfigPwrDwnSave')
+            #self.setConfig('setConfigPwrDwnSave')
             return "OK"
         
         except Exception as E:
@@ -255,7 +255,8 @@ class ebyteE32:
             # did we receive anything ?
             if js_payload == None:
                 # nothing
-                return { 'msg':None }
+                self.received_data = None
+                return self.received_data
             else :
                 # decode message
                 msg = ''
@@ -272,7 +273,11 @@ class ebyteE32:
                         msg = msg[:-1]
                 # JSON to dictionary
                 message = ujson.loads(msg)
-                return message
+                if message != None and message['msg'] != None :
+                    self.received_data = message 
+                else:
+                    self.received_data = None
+                return self.received_data['msg']
         
         except Exception as E:
             if self.debug:
@@ -385,7 +390,7 @@ class ebyteE32:
             # send the command
             result = self.sendCommand('getConfig')
             # check result
-            if len(result) != 6:
+            if len(result) != 5:
                 return "NOK"
             # decode result
             self.decodeConfig(result)
@@ -552,4 +557,3 @@ class ebyteE32:
         #self.M1.value(int(bits[1]))
         # wait a moment
         utime.sleep_ms(50)
-
